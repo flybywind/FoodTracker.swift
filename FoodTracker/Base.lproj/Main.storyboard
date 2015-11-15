@@ -115,7 +115,7 @@
                     <navigationItem key="navigationItem" title="New Meal" id="i6n-sD-Ay0">
                         <barButtonItem key="leftBarButtonItem" title="cancel" id="0jM-gB-1Ey">
                             <connections>
-                                <segue destination="zuU-8H-vme" kind="unwind" unwindAction="unwindToMealList:" id="3r9-3L-2Kw"/>
+                                <action selector="cancel:" destination="BYZ-38-t0r" id="Nve-c1-adn"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="save" id="QkZ-gd-geC">
@@ -125,7 +125,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="cancelBtn" destination="0jM-gB-1Ey" id="seR-7A-wpE"/>
                         <outlet property="imageView" destination="gxN-H1-OKp" id="Hag-wR-ouL"/>
                         <outlet property="mealName" destination="cGn-P3-bRL" id="7G5-s2-tEq"/>
                         <outlet property="ratingCtrl" destination="nLO-4v-5TG" id="q5U-Iv-n6t"/>

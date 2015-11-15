@@ -21,7 +21,6 @@ class MealViewController: UIViewController, UITextFieldDelegate,
     
     @IBOutlet weak var ratingCtrl: RatingCtrl!
     
-    @IBOutlet weak var cancelBtn: UIBarButtonItem!
     @IBOutlet weak var saveMeal: UIBarButtonItem!
     /*
     这个值可以来自2个途径：MealTableViewController的prepareForSegue函数，此时是一个已经存在的meal，或者save按钮按下之后，此时是创建一个meal。
@@ -34,8 +33,12 @@ class MealViewController: UIViewController, UITextFieldDelegate,
         // Hide the keyboard.
         return mealName.resignFirstResponder()
     }
-    
+
     func textFieldDidEndEditing(textField: UITextField) {
+        if mealName.text != nil {
+            saveMeal.enabled = true
+            navigationItem.title = mealName.text!
+        }
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -55,6 +58,7 @@ class MealViewController: UIViewController, UITextFieldDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         mealName.delegate = self
+        saveMeal.enabled = false
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -62,6 +66,9 @@ class MealViewController: UIViewController, UITextFieldDelegate,
     }
     
     // MARK: actions
+    @IBAction func cancel(sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
     @IBAction func selectImage(sender: UITapGestureRecognizer) {
         
         mealName.resignFirstResponder()
@@ -75,6 +82,7 @@ class MealViewController: UIViewController, UITextFieldDelegate,
         
         presentViewController(imagePickerController, animated: true, completion: nil)
     }
+    
     // MARK: Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (sender === saveMeal) {
@@ -82,8 +90,6 @@ class MealViewController: UIViewController, UITextFieldDelegate,
             let photo = imageView.image
             let rating = ratingCtrl.rating
             meal = Meal(name: name, photo: photo, rating: rating)
-        }else if (sender === cancelBtn) {
-            meal = nil
         }
     }
 }
