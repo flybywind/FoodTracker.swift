@@ -58,7 +58,15 @@ class MealViewController: UIViewController, UITextFieldDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         mealName.delegate = self
-        saveMeal.enabled = false
+        if mealName.text == nil {
+            saveMeal.enabled = false
+        }
+        if let m = meal {
+            navigationItem.title = m.name
+            mealName.text = m.name
+            imageView.image = m.photo
+            ratingCtrl.rating = m.rating
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
