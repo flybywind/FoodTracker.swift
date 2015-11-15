@@ -20,7 +20,13 @@ class MealViewController: UIViewController, UITextFieldDelegate,
     @IBOutlet weak var imageView: UIImageView!
     
     @IBOutlet weak var ratingCtrl: RatingCtrl!
-
+    
+    @IBOutlet weak var cancelBtn: UIBarButtonItem!
+    @IBOutlet weak var saveMeal: UIBarButtonItem!
+    /*
+    这个值可以来自2个途径：MealTableViewController的prepareForSegue函数，此时是一个已经存在的meal，或者save按钮按下之后，此时是创建一个meal。
+    */
+    var meal: Meal?
     
     // MARK: delegate functions
     //  gets called when the user taps Return (or in this case, Done) on the keyboard
@@ -68,6 +74,17 @@ class MealViewController: UIViewController, UITextFieldDelegate,
         imagePickerController.delegate = self
         
         presentViewController(imagePickerController, animated: true, completion: nil)
+    }
+    // MARK: Navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (sender === saveMeal) {
+            let name = mealName.text ?? ""
+            let photo = imageView.image
+            let rating = ratingCtrl.rating
+            meal = Meal(name: name, photo: photo, rating: rating)
+        }else if (sender === cancelBtn) {
+            meal = nil
+        }
     }
 }
 
