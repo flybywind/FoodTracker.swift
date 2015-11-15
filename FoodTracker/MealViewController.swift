@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MealViewController.swift
 //  FoodTracker
 //
 //  Created by flybywind on 15/11/13.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate,
+class MealViewController: UIViewController, UITextFieldDelegate,
     UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: Properties
@@ -16,7 +16,6 @@ class ViewController: UIViewController, UITextFieldDelegate,
     // 注意不要多次绑定一个控件，否则会出现错误：
     // this class is not key value coding-compliant for the key
     // 此时需要去connection inspector中检查一下，删除重复的绑定！
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var mealName: UITextField!
     @IBOutlet weak var imageView: UIImageView!
     
@@ -31,7 +30,6 @@ class ViewController: UIViewController, UITextFieldDelegate,
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        titleLabel.text = textField.text
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
