@@ -61,7 +61,7 @@ class MealTableViewController: UITableViewController {
         return cell
     }
     
-    
+    // 通过sourceViewController和destinationViewController传输数据
     @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.sourceViewController as? MealViewController, meal = sourceViewController.meal {
             if let selectRow = tableView.indexPathForSelectedRow {

@@ -35,8 +35,7 @@ class MealViewController: UIViewController, UITextFieldDelegate,
     }
 
     func textFieldDidEndEditing(textField: UITextField) {
-        if mealName.text != nil {
-            saveMeal.enabled = true
+        if validateMealName() {
             navigationItem.title = mealName.text!
         }
     }
@@ -54,19 +53,28 @@ class MealViewController: UIViewController, UITextFieldDelegate,
         // Dismiss the picker.
         dismissViewControllerAnimated(true, completion: nil)
     }
+    // MARK: own method
+    func validateMealName() -> Bool {
+        if let meal_name = mealName.text where meal_name == "" {
+            saveMeal.enabled = false
+            return true
+        } else {
+            saveMeal.enabled = true
+            return false
+        }
+    }
     // MARK: overide
     override func viewDidLoad() {
         super.viewDidLoad()
         mealName.delegate = self
-        if mealName.text == nil {
-            saveMeal.enabled = false
-        }
+        
         if let m = meal {
             navigationItem.title = m.name
             mealName.text = m.name
             imageView.image = m.photo
             ratingCtrl.rating = m.rating
         }
+        validateMealName()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -75,7 +83,14 @@ class MealViewController: UIViewController, UITextFieldDelegate,
     
     // MARK: actions
     @IBAction func cancel(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+        // Depending on style of presentation (modal or push presentation), this view controller needs to be dismissed in two different ways.
+        let isPresentingInAddMealMode = presentingViewController is UINavigationController
+        if isPresentingInAddMealMode {
+            dismissViewControllerAnimated(true, completion: nil)
+        }else {
+            // The else clause gets executed when the meal scene was pushed onto the navigation stack on top of the meal list scene
+            navigationController?.popViewControllerAnimated(true)
+        }
     }
     @IBAction func selectImage(sender: UITapGestureRecognizer) {
         
