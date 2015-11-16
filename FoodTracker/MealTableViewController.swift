@@ -19,7 +19,11 @@ class MealTableViewController: UITableViewController {
         super.viewDidLoad()
         // Use the edit button item provided by the table view controller.
         navigationItem.leftBarButtonItem = editButtonItem()
-        loadSampleMeals()
+        if let savedMeals = loadMeals() {
+            meals += savedMeals
+        } else {
+            loadSampleMeals()
+        }
     }
     func loadSampleMeals() {
         let photo1 = UIImage(named: "meal1")!
@@ -66,6 +70,7 @@ class MealTableViewController: UITableViewController {
     @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.sourceViewController as? MealViewController, meal = sourceViewController.meal {
             if let selectRow = tableView.indexPathForSelectedRow {
+                // update an existing meal
                 meals[selectRow.row] = meal
                 tableView.reloadRowsAtIndexPaths([selectRow], withRowAnimation: .None)
             } else {
@@ -74,6 +79,7 @@ class MealTableViewController: UITableViewController {
                 meals.append(meal)
                 tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
             }
+            saveMeals()
         }
     }
     // Override to support conditional editing of the table view.
@@ -88,6 +94,7 @@ class MealTableViewController: UITableViewController {
             // Delete the row from the data source
             meals.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            saveMeals()
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -124,6 +131,16 @@ class MealTableViewController: UITableViewController {
             print("Add new Meal")
         }
     }
-    
+    // MARK: persist data
+    func saveMeals() {
+        if NSKeyedArchiver.archiveRootObject(meals, toFile: Meal.ArchiveURL.path!) {
+            print("save meals successfully")
+        } else {
+            print("failed to save meals")
+        }
+    }
+    func loadMeals() -> [Meal]? {
+        return NSKeyedUnarchiver.unarchiveObjectWithFile(Meal.ArchiveURL.path!) as? [Meal]
+    }
 
 }
